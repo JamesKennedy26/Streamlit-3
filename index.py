@@ -8,6 +8,7 @@ st.title("Jimmy's Wacky Weather Dashboard")
 city = st.text_input("Where do you live?","berwick",key="city")
 
 if city:
+    st.balloons()
     if city.isdigit():
         params = {'zip': city, 'appid': api_key}
     else:
@@ -25,7 +26,7 @@ if city:
         mode="gauge+number+delta",
         value=data['main']['temp'],
         domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "Temp in Celsius", 'font': {'size': 24}},
+        title={'text': "Temp in Fahrenheit", 'font': {'size': 24}},
         delta={'reference': 22, 'increasing': {'color': "RebeccaPurple"}},
         gauge={
             'axis': {'range': [None, 60], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -48,7 +49,7 @@ if city:
         mode="gauge+number+delta",
         value=data['main']['feels_like'],
         domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "Feels like in Celsius", 'font': {'size': 24}},
+        title={'text': "Feels like in Fahrenheit", 'font': {'size': 24}},
         delta={'reference': 22, 'increasing': {'color': "RebeccaPurple"}},
         gauge={
             'axis': {'range': [None, 60], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -71,7 +72,7 @@ if city:
         mode="gauge+number+delta",
         value=data['main']['temp_max'],
         domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "Temp max in Celsius", 'font': {'size': 24}},
+        title={'text': "Temp max in Fahrenheit", 'font': {'size': 24}},
         delta={'reference': 22, 'increasing': {'color': "RebeccaPurple"}},
         gauge={
             'axis': {'range': [None, 60], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -115,10 +116,13 @@ if city:
     with st.container():
         st.text("")  # Add empty space for alignment
         with col1:
+            st.write(f"The weather outside has {data['weather'][0]['description']}")
             st.plotly_chart(fig1)
         with col2:
+            st.write(f"The pressure outside is {data['main']['pressure']} Pascals")
             st.plotly_chart(fig2)
         with col3:
+            st.write(f"The humidity outside is {data['main']['humidity']} g/kg")
             st.plotly_chart(fig3)
 
 
