@@ -1,130 +1,45 @@
-import requests
-import plotly.graph_objects as go
-import streamlit as st
+import tkinter
+from tkinter import ttk
 
-api_key = 'd711e292439bac5ac4a771bbe3a4c704'
-st.set_page_config(layout="wide")
-st.title("Jimmy's Wacky Weather Dashboard")
-city = st.text_input("Where do you live?","berwick",key="city")
+window = tkinter.Tk()
+window.configure(bg='Black') 
+frame = tkinter.Frame(window)
+frame = tkinter.Frame(window, bg='Black')
+window.title("Hello")
+frame.pack()
 
-if city:
-    st.balloons()
-    if city.isdigit():
-        params = {'zip': city, 'appid': api_key}
-    else:
-        params = {'q': city, 'appid': api_key}
+# Getting User Info
+user_info_frame = tkinter.LabelFrame(frame, text="User Information", bg='black', fg='white', font=("Helvetica", 18))
+user_info_frame.grid(row=0, column=0, padx=20, pady=30)
 
-    api_endpoint = 'https://api.openweathermap.org/data/2.5/weather?units=imperial'
+first_name_label = tkinter.Label(user_info_frame, text="First Name", bg='black', fg='white')
+first_name_label.grid(row=0, column=0, padx=15, pady=3)
+last_name_label = tkinter.Label(user_info_frame, text="Last Name", bg='black', fg='white')
+last_name_label.grid(row=0, column=1)
 
-    response = requests.get(api_endpoint, params=params)
-    
-    if response.status_code == 200:
-        data = response.json()
-    print(response.json())
-    col1, col2, col3 = st.columns(3)  # Create three columns for the charts
-    fig1 = go.Figure(go.Indicator(
-        mode="gauge+number+delta",
-        value=data['main']['temp'],
-        domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "Temp in Fahrenheit", 'font': {'size': 24}},
-        delta={'reference': 22, 'increasing': {'color': "RebeccaPurple"}},
-        gauge={
-            'axis': {'range': [None, 60], 'tickwidth': 1, 'tickcolor': "darkblue"},
-            'bar': {'color': "darkblue"},
-            'bgcolor': "white",
-            'borderwidth': 2,
-            'bordercolor': "gray",
-            'steps': [
-                {'range': [0, 10], 'color': 'lightblue'},
-                {'range': [10, 20], 'color': 'darkolivegreen'},
-                {'range': [20, 30], 'color': 'yellowgreen'},
-                {'range': [30, 40], 'color': 'yellow'},
-                {'range': [40, 50], 'color': 'orange'},
-                {'range': [50, 60], 'color': 'red'}],
-            'threshold': {
-                'line': {'color': "red", 'width': 4},
-                'thickness': 0.75,
-                'value': 22}}))
-    fig2 = go.Figure(go.Indicator(
-        mode="gauge+number+delta",
-        value=data['main']['feels_like'],
-        domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "Feels like in Fahrenheit", 'font': {'size': 24}},
-        delta={'reference': 22, 'increasing': {'color': "RebeccaPurple"}},
-        gauge={
-            'axis': {'range': [None, 60], 'tickwidth': 1, 'tickcolor': "darkblue"},
-            'bar': {'color': "darkblue"},
-            'bgcolor': "white",
-            'borderwidth': 2,
-            'bordercolor': "gray",
-            'steps': [
-                {'range': [0, 10], 'color': 'lightblue'},
-                {'range': [10, 20], 'color': 'darkolivegreen'},
-                {'range': [20, 30], 'color': 'yellowgreen'},
-                {'range': [30, 40], 'color': 'yellow'},
-                {'range': [40, 50], 'color': 'orange'},
-                {'range': [50, 60], 'color': 'red'}],
-            'threshold': {
-                'line': {'color': "red", 'width': 4},
-                'thickness': 0.75,
-                'value': 22}}))
-    fig3 = go.Figure(go.Indicator(
-        mode="gauge+number+delta",
-        value=data['main']['temp_max'],
-        domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "Temp max in Fahrenheit", 'font': {'size': 24}},
-        delta={'reference': 22, 'increasing': {'color': "RebeccaPurple"}},
-        gauge={
-            'axis': {'range': [None, 60], 'tickwidth': 1, 'tickcolor': "darkblue"},
-            'bar': {'color': "darkblue"},
-            'bgcolor': "white",
-            'borderwidth': 2,
-            'bordercolor': "gray",
-            'steps': [
-                {'range': [0, 10], 'color': 'lightblue'},
-                {'range': [10, 20], 'color': 'darkolivegreen'},
-                {'range': [20, 30], 'color': 'yellowgreen'},
-                {'range': [30, 40], 'color': 'yellow'},
-                {'range': [40, 50], 'color': 'orange'},
-                {'range': [50, 60], 'color': 'red'}],
-            'threshold': {
-                'line': {'color': "red", 'width': 4},
-                'thickness': 0.75,
-                'value': 22}}))
-    # Dark background layout
-    fig1.update_layout(
-        plot_bgcolor='rgba(0,0,0,0)',  # Transparent plot background
-        paper_bgcolor='rgba(0,0,0,0)',  # Transparent paper background
-        height=400,  # Adjust the height
-        width=400,   # Adjust the width
-    )
-        # Dark background layout
-    fig2.update_layout(
-        plot_bgcolor='rgba(0,0,0,0)',  # Transparent plot background
-        paper_bgcolor='rgba(0,0,0,0)',  # Transparent paper background
-        height=400,  # Adjust the height
-        width=400,   # Adjust the width
-    )
-    fig3.update_layout(
-        plot_bgcolor='rgba(0,0,0,0)',  # Transparent plot background
-        paper_bgcolor='rgba(0,0,0,0)',  # Transparent paper background
-        height=400,  # Adjust the height
-        width=400,   # Adjust the width
-    )
+first_name_entry = tkinter.Entry(user_info_frame)
+last_name_entry = tkinter.Entry(user_info_frame)
+first_name_entry.grid(row=1, column=0)
+last_name_entry.grid(row=1, column=1)
 
-    # Place each chart in its own column
-    with st.container():
-        st.text("")  # Add empty space for alignment
-        with col1:
-            st.write(f"The weather outside has {data['weather'][0]['description']}")
-            st.plotly_chart(fig1)
-        with col2:
-            st.write(f"The pressure outside is {data['main']['pressure']} Pascals")
-            st.plotly_chart(fig2)
-        with col3:
-            st.write(f"The humidity outside is {data['main']['humidity']} g/kg")
-            st.plotly_chart(fig3)
+title_label = tkinter.Label(user_info_frame, text="Title", bg='black', fg='white')
+title_combobox = ttk.Combobox(user_info_frame,
+                              values=["Mr.", "Mrs.", "Ms.", "Dr."])
+title_label.grid(row=0, column=2, padx=15, pady=3)
+title_combobox.grid(row=1, column=2, padx=15, pady=3)
 
+age_label = tkinter.Label(user_info_frame, text="Age", bg='black', fg='white')
+age_spinbox = tkinter.Spinbox(user_info_frame, from_=18, to=100)
+age_label.grid(row=2, column=0, padx=12, pady=3)
+age_spinbox.grid(row=3, column=0, padx=12, pady=3)
 
-
-#fig.show()
+nationality_label = tkinter.Label(user_info_frame, text="Nationality", bg='black', fg='white')
+nationality_combobox = ttk.Combobox(user_info_frame,
+                                    values=[
+                                        "Africa", "Antartica", "Asia",
+                                        "Europe", "North America", "Oceania",
+                                        "South America"
+                                    ])
+nationality_label.grid(row=2, column=1)
+nationality_combobox.grid(row=3, column=1)
+window.mainloop()
